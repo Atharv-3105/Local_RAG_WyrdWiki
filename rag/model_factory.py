@@ -19,7 +19,7 @@ def load_models(profile: str = DEFAULT_PROFILE) :
     llm = Ollama(
         model = config["llm"],
         request_timeout=300.0,
-        # context_window=4096,  #Use this when running on LOW-RAM system
+        context_window=4096,  #Use this when running on LOW-RAM system
     )
     
     embed_model = OllamaEmbedding(model_name=config["embed"])

@@ -1,12 +1,13 @@
 from rag.config import TOP_K
 
-def get_retriever(index):
+def retrieve_with_scores(index, query:str):
     ''' 
-        This function returns retirever object
+        Function to retrieve NODES along with SIMILARITY SCORES
     '''
     
     retriever = index.as_retriever(
         similarity_top_k = TOP_K
     )
     
-    return retriever
+    nodes = retriever.retrieve(query)
+    return nodes
