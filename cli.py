@@ -51,6 +51,8 @@ def main():
         print("\n[bold blue]Answer:[/bold blue]")
         print(result["answer"])
         
+        print(f"\n[bold yellow] Confidence: {result['confidence']}%")
+        
         print("\n[bold yellow]Sources:[/bold yellow]")
         for src in result["sources"]:
             print(src)

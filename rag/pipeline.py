@@ -1,6 +1,6 @@
 from rag.ingestion import load_notion_docs, chunk_documents
 from rag.vector_store import build_or_load_index
-from rag.retriever import get_retriever
+# from rag.retriever import get_retriever
 from rag.generator import generate_answer
 
 from rag.model_factory import load_models
@@ -44,8 +44,7 @@ def initialize_rag(profile = "fast"):
 def query_rag(index, query: str, profile = "fast"):
     
     llm, _ = load_models(profile)
-    retriever = get_retriever(index)
-    
-    result = generate_answer(llm, retriever, query)
+
+    result = generate_answer(llm, index, query)
     
     return result

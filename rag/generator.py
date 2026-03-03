@@ -1,3 +1,7 @@
+from rag.retriever import retrieve_with_scores
+
+MIN_SIMILARITY_THRESHOLD = 0.35
+
 def build_prompt(context: str, query: str):
     ''' 
         Strict grounded prompt to reduce hallucination
@@ -24,16 +28,35 @@ Answer:
 """
 
 
-def generate_answer(llm, retriever, query: str):
+def generate_answer(llm, index, query: str):
     
     #Retrieve relevant nodes
-    nodes = retriever.retrieve(query)
+    nodes = retrieve_with_scores(index, query)
     
     if not nodes:
         return {
             "answer": "Not found in company wiki.",
             "sources": [],
+            "confidence":0.0
         }
+    
+    #Extract Similarity Scores
+    scores = [node.score for node in nodes if node.score is not None]
+    
+    if not scores:
+        confidence = 0.0
+    else:
+        confidence = max(scores)   
+        
+    #Filter score above the Threshold only
+    if confidence < MIN_SIMILARITY_THRESHOLD:
+        return {
+            "answer" : "Not found in company wiki",
+            "sources": [],
+            "confidence": round(confidence * 100, 2)
+        }
+    
+    
         
     #Build context string 
     context = "\n\n".join([node.text for node in nodes])
@@ -44,5 +67,6 @@ def generate_answer(llm, retriever, query: str):
     
     return {
         "answer":response.text.strip(),
-        "sources": [node.metadata for node in nodes]
+        "sources": [node.metadata for node in nodes],
+        "confidence": round(confidence * 100, 2)
     }
