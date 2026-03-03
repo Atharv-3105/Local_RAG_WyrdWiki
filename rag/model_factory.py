@@ -18,9 +18,10 @@ def load_models(profile: str = DEFAULT_PROFILE) :
     
     llm = Ollama(
         model = config["llm"],
-        request_timeout=120.0
+        request_timeout=300.0,
+        context_window=4096,
     )
     
-    embed_model = OllamaEmbedding(model_name=config["emebd"])
+    embed_model = OllamaEmbedding(model_name=config["embed"])
     
     return llm, embed_model

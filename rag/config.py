@@ -6,7 +6,7 @@ DATA_DIR = BASE_DIR / "data"
 PERSIST_DIR = BASE_DIR / "vector_store"
 
 PDF_PATH = DATA_DIR / "wiki.pdf"
-
+NOTION_EXPORT_DIR = DATA_DIR / "notion_docs"
 
 #===============MODEL PROFILES================
 MODEL_PROFILES = {
