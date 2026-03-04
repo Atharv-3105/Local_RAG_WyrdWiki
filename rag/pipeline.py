@@ -2,6 +2,7 @@ from rag.ingestion import load_notion_docs, chunk_documents
 from rag.vector_store import build_or_load_index
 # from rag.retriever import get_retriever
 from rag.generator import generate_answer
+from rag.reranker import rerank_and_filter
 
 from rag.model_factory import load_models
 import chromadb
@@ -44,7 +45,18 @@ def initialize_rag(profile = "fast"):
 def query_rag(index, query: str, profile = "fast"):
     
     llm, _ = load_models(profile)
+    
+    #Retrieve more node
+    retriever = index.as_retriever(similarity_top_k=10)
+    nodes = retriever.retrieve(query)
+    
+    #Add re-ranking and diversity filter
+    filtered_nodes = rerank_and_filter(
+        nodes, 
+        final_top_k=5,
+        max_per_source=2
+    )
 
-    result = generate_answer(llm, index, query)
+    result = generate_answer(llm, filtered_nodes, query)
     
     return result
