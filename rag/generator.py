@@ -28,10 +28,10 @@ Answer:
 """
 
 
-def generate_answer(llm, index, query: str):
+def generate_answer(llm, nodes, query: str):
     
     #Retrieve relevant nodes
-    nodes = retrieve_with_scores(index, query)
+    # nodes = retrieve_with_scores(index, query)
     
     if not nodes:
         return {
