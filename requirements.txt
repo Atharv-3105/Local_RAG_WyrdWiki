@@ -8,3 +8,4 @@ llama-index-llms-ollama
 llama-index-embeddings-ollama
 llama-index-vector-stores-chroma
 beautifulsoup4  #For HTML parsing
+gradio
